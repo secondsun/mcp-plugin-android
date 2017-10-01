@@ -1,0 +1,45 @@
+plugins {
+    id "com.github.hierynomus.license" version "0.11.0"
+    id 'java-gradle-plugin'
+}
+
+apply plugin: 'groovy'
+
+group 'org.feedhenry.tools'
+version '1.0-SNAPSHOT'
+
+license {
+    header rootProject.file('codequality/HEADER')
+    strictCheck true
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+    google()
+}
+
+
+dependencies {
+    compile 'com.android.tools.build:gradle:3.0.0-beta6'
+    testCompile 'junit:junit:4.12'
+    compile 'org.codehaus.groovy:groovy-all:2.4.11'
+
+}
+configurations.all {
+    resolutionStrategy {
+        force 'org.codehaus.groovy:groovy-all:2.4.11'
+    }
+}
+
+gradlePlugin {
+    plugins {
+        mcpAndroidPlugin {
+            id = "mcp-android-plugin"
+            implementationClass = "org.feedhenry.tools.android.FeedHenryAndroidMCPPlugin"
+        }
+    }
+}
