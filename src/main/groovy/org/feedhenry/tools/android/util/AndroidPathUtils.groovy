@@ -60,7 +60,7 @@ class AndroidPathUtils {
         }
 
         File outputDir =
-                project.file("$project.buildDir/generated/res/mcp-services/$variant.dirName")
+                project.file("$project.buildDir/generated/res/mcpServices/$variant.dirName")
 
         FeedHenryAndroidMCPConfigurationTask task = project.tasks
                 .create("process${variant.name.capitalize()}FeedHenryMCP",

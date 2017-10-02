@@ -19,27 +19,51 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
 import com.google.common.collect.ImmutableMap
 import groovy.util.logging.Log
-import org.apache.log4j.Level;
-import org.junit.Test;
+import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.testkit.runner.GradleRunner
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Ignore;
+import org.junit.Test
+
+import java.util.logging.Level;
 
 @Log
-class SimpleTests implements HasAndroidProject {
+class SimpleTests {
 
-    @Test
-    public void testGenerateResource() {
-        mcpProject.apply(ImmutableMap.of("plugin", "com.android.application"))
-        def plugin
-        plugin = mcpProject.plugins.getPlugin(AppPlugin)
+    List<File> pluginClasspath
 
-        def android = mcpProject.getExtensions().getByType(AppExtension);
-        android.setCompileSdkVersion(26);
-        android.setBuildToolsVersion("26.0.1");
-        plugin.createAndroidTasks(false);
+    @Before
+    void setUp() {
 
-        mcpProject.apply(ImmutableMap.of("plugin", "mcp-android-plugin"))
-        def tasks = mcpProject.getAllTasks(true)
-        log.log(Level.DEBUG, tasks);
-        //test that tasks contains processDebugMCP
+        def pluginClasspathResource = getClass().classLoader.findResource("plugin-classpath.txt")
+        if (pluginClasspathResource == null) {
+            throw new IllegalStateException("Did not find plugin classpath resource, run `testClasses` build task.")
+        }
+
+        pluginClasspath = pluginClasspathResource.readLines().collect { new File(it) }
     }
+
+    //@Test @Ignore
+    public void testGenerateResource() {
+
+        def result =GradleRunner.create()
+                .withProjectDir(getProjectDirectory())
+                .withArguments('tasks')
+                .withPluginClasspath(pluginClasspath)
+                .build()
+
+        Assert.assertTrue(    result.output.contains('app:processMCPDebug'));
+    }
+
+
+
+    File getProjectDirectory() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("").getFile()+ "../../../resources/test/default-project");
+        return file
+    }
+
 
 }

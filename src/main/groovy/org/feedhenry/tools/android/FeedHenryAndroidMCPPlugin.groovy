@@ -27,7 +27,7 @@ class FeedHenryAndroidMCPPlugin implements Plugin<Project> {
     @Override
     void apply(Project target) {
         target.with  {
-            if (!plugins.hasPlugin("com.android.application") ||
+            if (!plugins.hasPlugin("com.android.application") &&
                     !plugins.hasPlugin("com.android.library")) {
                 logger.warn("Did not detect Android Plugin, be sure the mcp plugin is declared after the android plugins.");
             }

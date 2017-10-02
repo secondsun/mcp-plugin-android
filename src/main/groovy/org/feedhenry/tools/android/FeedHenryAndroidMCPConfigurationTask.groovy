@@ -61,7 +61,12 @@ class FeedHenryAndroidMCPConfigurationTask extends DefaultTask {
 
     }
 
-    void writeValues(File file, MCPConfig mcpConfig) {
+    void writeValues(File dir, MCPConfig mcpConfig) {
+        if (!dir.exists() &&!dir.mkdirs()) {
+            throw new GradleException("Could not create $dir.path");
+        }
+
+        def outputFile = new File(dir, "values.xml");
         def writer = new StringWriter()
         def xml = new MarkupBuilder(writer)
 
@@ -71,7 +76,7 @@ class FeedHenryAndroidMCPConfigurationTask extends DefaultTask {
             string name:'mcp_appId', translatable:'false', mcpConfig.appId
         }
 
-        file >> writer.toString()
+        outputFile << writer.toString()
 
     }
 

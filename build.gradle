@@ -1,16 +1,18 @@
 plugins {
-    id "com.github.hierynomus.license" version "0.11.0"
+    id "com.github.hierynomus.license" version "0.14.0"
     id 'java-gradle-plugin'
 }
 
 apply plugin: 'groovy'
+apply plugin: 'maven'
 
 group 'org.feedhenry.tools'
 version '1.0-SNAPSHOT'
 
 license {
+    excludes (['**/*.json', "src/test/resources/**/*","src/main/resources/**/*"])
     header rootProject.file('codequality/HEADER')
-    strictCheck true
+    strictCheck false
 }
 
 sourceCompatibility = 1.8
@@ -22,6 +24,15 @@ repositories {
     google()
 }
 
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('build/libs'))
+        }
+    }
+
+}
 
 dependencies {
     compile 'com.android.tools.build:gradle:3.0.0-beta6'
@@ -42,4 +53,21 @@ gradlePlugin {
             implementationClass = "org.feedhenry.tools.android.FeedHenryAndroidMCPPlugin"
         }
     }
+}
+// Write the plugin's classpath to a file to share with the tests
+task createClasspathManifest {
+    def outputDir = file("$buildDir/$name")
+
+    inputs.files sourceSets.main.runtimeClasspath
+    outputs.dir outputDir
+
+    doLast {
+        outputDir.mkdirs()
+        file("$outputDir/plugin-classpath.txt").text = sourceSets.main.runtimeClasspath.join("\n")
+    }
+}
+
+// Add the classpath file to the test runtime classpath
+dependencies {
+    testRuntime files(createClasspathManifest)
 }
