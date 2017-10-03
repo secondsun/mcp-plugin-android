@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.hierynomus.license" version "0.14.0"
+//    id "com.github.hierynomus.license" version "0.14.0"
     id 'java-gradle-plugin'
 }
 
@@ -9,11 +9,11 @@ apply plugin: 'maven'
 group 'org.feedhenry.tools'
 version '1.0-SNAPSHOT'
 
-license {
-    excludes (['**/*.json', "src/test/resources/**/*","src/main/resources/**/*"])
-    header rootProject.file('codequality/HEADER')
-    strictCheck false
-}
+//license {
+//    excludes (['**/*.json', "src/test/resources/**/*","src/main/resources/**/*"])
+//    header rootProject.file('codequality/HEADER')
+//    strictCheck false
+//}
 
 sourceCompatibility = 1.8
 
