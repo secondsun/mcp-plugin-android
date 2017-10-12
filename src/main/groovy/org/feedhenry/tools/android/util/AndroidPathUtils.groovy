@@ -16,13 +16,17 @@
 package org.feedhenry.tools.android.util
 
 import org.feedhenry.tools.android.FeedHenryAndroidMCPConfigurationTask
+import org.feedhenry.tools.android.FeedHenryMCPSelfSignedCertificateHelperTask
+import org.feedhenry.tools.android.MCPExtension
 import org.gradle.api.Project
 
 class AndroidPathUtils {
 
 
     static void handleVariant(Project project,
-                              def variant) {
+                              def variant,
+                              MCPExtension mcpExtension) {
+
 
         File mcpConfigFile = null
 
@@ -59,18 +63,31 @@ class AndroidPathUtils {
             searchedLocation = searchedLocation + mcpConfigFile.getPath()
         }
 
-        File outputDir =
+        File mcpServicesDir =
                 project.file("$project.buildDir/generated/res/mcpServices/$variant.dirName")
 
-        FeedHenryAndroidMCPConfigurationTask task = project.tasks
+
+        FeedHenryAndroidMCPConfigurationTask configureMCP = project.tasks
                 .create("process${variant.name.capitalize()}FeedHenryMCP",
                 FeedHenryAndroidMCPConfigurationTask)
 
-        task.generatedPropsDir = outputDir
-        task.mcpConfigFile = mcpConfigFile
+        configureMCP.generatedPropsDir = mcpServicesDir
+        configureMCP.mcpConfigFile = mcpConfigFile
+
+        if (mcpExtension.enableCertificateHelper) {
+            FeedHenryMCPSelfSignedCertificateHelperTask selfSignedConfigTask = project.tasks
+                    .create("configuredCertificatesFor${variant.name.capitalize()}FeedHenryMCP",
+                    FeedHenryMCPSelfSignedCertificateHelperTask)
+            selfSignedConfigTask.certificateNamePattern = mcpExtension.certificateNamePattern;
+            selfSignedConfigTask.hosts = mcpExtension.hosts
+            selfSignedConfigTask.networkSecurityFileName = mcpExtension.networkSecurityFileName
+            variant.registerResGeneratingTask(selfSignedConfigTask, mcpServicesDir)
+        }
+
         /*TODO : Setup Task*/
 
-        variant.registerResGeneratingTask(task, outputDir)
+        variant.registerResGeneratingTask(configureMCP, mcpServicesDir)
+
 
     }
 }

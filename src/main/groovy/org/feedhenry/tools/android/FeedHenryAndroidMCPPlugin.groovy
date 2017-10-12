@@ -26,21 +26,27 @@ class FeedHenryAndroidMCPPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project target) {
+
         target.with  {
             if (!plugins.hasPlugin("com.android.application") &&
                     !plugins.hasPlugin("com.android.library")) {
                 logger.warn("Did not detect Android Plugin, be sure the mcp plugin is declared after the android plugins.");
             }
 
+
+            //Enable MCP extension
+            def mcpExtension = extensions.create('mcp', MCPExtension)
+
+
             plugins.withId("com.android.application", {
                 android.applicationVariants.all { variant ->
-                    handleVariant(project, variant)
+                    handleVariant(project, variant, mcpExtension)
                 }
             });
 
             plugins.withId("com.android.library", {
                 android.libraryVariants.all { variant ->
-                    handleVariant(project, variant)
+                    handleVariant(project, variant, mcpExtension)
                 }
             });
         }
