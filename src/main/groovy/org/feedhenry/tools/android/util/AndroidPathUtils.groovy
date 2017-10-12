@@ -18,6 +18,7 @@ package org.feedhenry.tools.android.util
 import org.feedhenry.tools.android.FeedHenryAndroidMCPConfigurationTask
 import org.feedhenry.tools.android.FeedHenryMCPSelfSignedCertificateHelperTask
 import org.feedhenry.tools.android.MCPExtension
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 
 class AndroidPathUtils {
@@ -66,6 +67,13 @@ class AndroidPathUtils {
         File mcpServicesDir =
                 project.file("$project.buildDir/generated/res/mcpServices/$variant.dirName")
 
+        if (mcpServicesDir.exists()) {
+            mcpServicesDir.deleteDir()
+        }
+
+        if (!mcpServicesDir.mkdirs()) {
+            throw new GradleException("Could not create $mcpServicesDir.path")
+        }
 
         FeedHenryAndroidMCPConfigurationTask configureMCP = project.tasks
                 .create("process${variant.name.capitalize()}FeedHenryMCP",
@@ -81,6 +89,7 @@ class AndroidPathUtils {
             selfSignedConfigTask.certificateNamePattern = mcpExtension.certificateNamePattern;
             selfSignedConfigTask.hosts = mcpExtension.hosts
             selfSignedConfigTask.networkSecurityFileName = mcpExtension.networkSecurityFileName
+            selfSignedConfigTask.resXMlDir = mcpServicesDir
             variant.registerResGeneratingTask(selfSignedConfigTask, mcpServicesDir)
         }
 

@@ -41,13 +41,7 @@ class FeedHenryAndroidMCPConfigurationTask extends DefaultTask {
 
         project.logger.debug("Parsing $mcpConfigFile.path")
 
-        if (generatedPropsDir.exists()) {
-            generatedPropsDir.deleteDir()
-        }
 
-        if (!generatedPropsDir.mkdirs()) {
-            throw new GradleException("Could not create $generatedPropsDir.path")
-        }
 
         def slurper = new JsonSlurper();
         MCPConfig mcpConfig = new MCPConfig(slurper.parse(mcpConfigFile)).verify()
