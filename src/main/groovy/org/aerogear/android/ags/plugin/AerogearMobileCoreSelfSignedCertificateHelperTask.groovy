@@ -1,13 +1,12 @@
-package org.feedhenry.tools.android
+package org.aerogear.android.ags.plugin
 
-import groovy.util.logging.Log
 import groovy.xml.MarkupBuilder
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
-import java.net.URL;
+
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
@@ -18,10 +17,10 @@ import java.util.regex.Pattern
 /**
  * This class will download the self-signed certificate and save it in debug/res/raw
  */
-class FeedHenryMCPSelfSignedCertificateHelperTask extends DefaultTask {
+class AerogearMobileCoreSelfSignedCertificateHelperTask extends DefaultTask {
 
     @Input
-    String certificateNamePattern = 'mcp_'
+    String certificateNamePattern = 'aerogear_'
     @Input
     String[] hosts = []
     @Input
@@ -31,7 +30,7 @@ class FeedHenryMCPSelfSignedCertificateHelperTask extends DefaultTask {
     File resXMlDir;
 
 
-    FeedHenryMCPSelfSignedCertificateHelperTask() {
+    AerogearMobileCoreSelfSignedCertificateHelperTask() {
         outputs.upToDateWhen { false }
     }
 
@@ -87,15 +86,11 @@ class FeedHenryMCPSelfSignedCertificateHelperTask extends DefaultTask {
         def writer = new StringWriter()
         MarkupBuilder xml = new MarkupBuilder(writer)
 
-
-
-
             xml."network-security-config" {
                     "debug-overrides" {
                         "trust-anchors" {
                             certificateMap.keySet().each { String key ->
-
-                                certificates src: "@raw/" + certificateNamePattern + FeedHenryMCPSelfSignedCertificateHelperTask.escape(key);
+                                certificates src: "@raw/" + certificateNamePattern + AerogearMobileCoreSelfSignedCertificateHelperTask.escape(key);
                             }
                         }
                     }
@@ -103,7 +98,7 @@ class FeedHenryMCPSelfSignedCertificateHelperTask extends DefaultTask {
             
 
         certificateMap.keySet().each { String key ->
-            def certFile = new File(configRawDir, certificateNamePattern + FeedHenryMCPSelfSignedCertificateHelperTask.escape(key));
+            def certFile = new File(configRawDir, certificateNamePattern + AerogearMobileCoreSelfSignedCertificateHelperTask.escape(key));
             certFile << certificateMap[key];
         }
 

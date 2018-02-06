@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.feedhenry.tools.android.util
+package org.aerogear.android.ags.plugin.util
 
 class Constants {
     static final JSON_FILE_NAME = "mcp-config.json"

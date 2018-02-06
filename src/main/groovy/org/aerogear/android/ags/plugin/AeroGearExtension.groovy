@@ -1,4 +1,4 @@
-package org.feedhenry.tools.android
+package org.aerogear.android.ags.plugin
 
 import groovy.json.JsonSlurper
 import groovy.xml.MarkupBuilder
@@ -8,16 +8,16 @@ import org.gradle.api.tasks.TaskAction
 
 import java.util.logging.Level
 
-class MCPExtension {
+class AeroGearExtension {
     /**
-     * Enable downloading and saving certificates from MCP services
+     * Enable downloading and saving certificates from Mobile Core services
      */
     boolean enableCertificateHelper = false
     /**
      * A pattern to prepend to downloaded certificates
      */
 
-    String certificateNamePattern = 'mcp_'
+    String certificateNamePattern = 'aerogear_'
 
     /**
      * Hostnames to pull certificates for
@@ -30,9 +30,9 @@ class MCPExtension {
     String networkSecurityFileName = 'network_security_config.xml'
 
     @TaskAction
-    void action(){
+    void action() {
         Logger.log(Level.ALL, "generate values");
-        //writeValues(configXmlDir, mcpConfig);
+        writeValues(configXmlDir, mcpConfig);
     }
 
     void writeValues(File dir) {

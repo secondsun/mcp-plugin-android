@@ -1,5 +1,4 @@
 plugins {
-//    id "com.github.hierynomus.license" version "0.14.0"
     id 'java-gradle-plugin'
 }
 
@@ -8,12 +7,6 @@ apply plugin: 'maven'
 
 group 'org.feedhenry.tools'
 version '1.0-SNAPSHOT'
-
-//license {
-//    excludes (['**/*.json', "src/test/resources/**/*","src/main/resources/**/*"])
-//    header rootProject.file('codequality/HEADER')
-//    strictCheck false
-//}
 
 sourceCompatibility = 1.8
 
@@ -35,7 +28,7 @@ uploadArchives {
 }
 
 dependencies {
-    compile 'com.android.tools.build:gradle:3.0.0-beta6'
+    compile 'com.android.tools.build:gradle:3.0.1'
     testCompile 'junit:junit:4.12'
     compile 'org.codehaus.groovy:groovy-all:2.4.11'
 
@@ -49,8 +42,8 @@ configurations.all {
 gradlePlugin {
     plugins {
         mcpAndroidPlugin {
-            id = "mcp-android-plugin"
-            implementationClass = "org.feedhenry.tools.android.FeedHenryAndroidMCPPlugin"
+            id = "aerogear-android-plugin"
+            implementationClass = "org.aerogear.android.ags.plugin.AeroGearMobileCorePlugin"
         }
     }
 }

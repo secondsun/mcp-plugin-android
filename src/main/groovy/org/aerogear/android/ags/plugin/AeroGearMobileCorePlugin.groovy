@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.feedhenry.tools.android
+package org.aerogear.android.ags.plugin
 
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-import static org.feedhenry.tools.android.util.AndroidPathUtils.handleVariant
+import static org.aerogear.android.ags.plugin.util.AndroidPathUtils.handleVariant
 
 
-class FeedHenryAndroidMCPPlugin implements Plugin<Project> {
+class AeroGearMobileCorePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project target) {
@@ -34,8 +34,8 @@ class FeedHenryAndroidMCPPlugin implements Plugin<Project> {
             }
 
 
-            //Enable MCP extension
-            def mcpExtension = extensions.create('mcp', MCPExtension)
+            //Enable AeroGear extension
+            def mcpExtension = extensions.create('aerogear', AeroGearExtension)
 
 
             plugins.withId("com.android.application", {

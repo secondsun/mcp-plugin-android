@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.feedhenry.tools.android.util
+package org.aerogear.android.ags.plugin.util
 
-import org.feedhenry.tools.android.FeedHenryAndroidMCPConfigurationTask
-import org.feedhenry.tools.android.FeedHenryMCPSelfSignedCertificateHelperTask
-import org.feedhenry.tools.android.MCPExtension
+import org.aerogear.android.ags.plugin.AerogearConfigurationTask
+import org.aerogear.android.ags.plugin.AerogearMobileCoreSelfSignedCertificateHelperTask
+import org.aerogear.android.ags.plugin.AeroGearExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 
@@ -26,7 +26,7 @@ class AndroidPathUtils {
 
     static void handleVariant(Project project,
                               def variant,
-                              MCPExtension mcpExtension) {
+                              AeroGearExtension mcpExtension) {
 
 
         File mcpConfigFile = null
@@ -75,17 +75,17 @@ class AndroidPathUtils {
             throw new GradleException("Could not create $mcpServicesDir.path")
         }
 
-        FeedHenryAndroidMCPConfigurationTask configureMCP = project.tasks
+        AerogearConfigurationTask configureMCP = project.tasks
                 .create("process${variant.name.capitalize()}FeedHenryMCP",
-                FeedHenryAndroidMCPConfigurationTask)
+                AerogearConfigurationTask)
 
         configureMCP.generatedPropsDir = mcpServicesDir
         configureMCP.mcpConfigFile = mcpConfigFile
 
         if (mcpExtension.enableCertificateHelper) {
-            FeedHenryMCPSelfSignedCertificateHelperTask selfSignedConfigTask = project.tasks
+            AerogearMobileCoreSelfSignedCertificateHelperTask selfSignedConfigTask = project.tasks
                     .create("configuredCertificatesFor${variant.name.capitalize()}FeedHenryMCP",
-                    FeedHenryMCPSelfSignedCertificateHelperTask)
+                    AerogearMobileCoreSelfSignedCertificateHelperTask)
             selfSignedConfigTask.certificateNamePattern = mcpExtension.certificateNamePattern;
             selfSignedConfigTask.hosts = mcpExtension.hosts
             selfSignedConfigTask.networkSecurityFileName = mcpExtension.networkSecurityFileName

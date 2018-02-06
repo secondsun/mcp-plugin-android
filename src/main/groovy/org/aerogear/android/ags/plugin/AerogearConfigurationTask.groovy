@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.feedhenry.tools.android
+package org.aerogear.android.ags.plugin
 
 import groovy.json.JsonSlurper
 import groovy.xml.MarkupBuilder
@@ -24,7 +24,7 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-class FeedHenryAndroidMCPConfigurationTask extends DefaultTask {
+class AerogearConfigurationTask extends DefaultTask {
 
     @InputFile @Optional
     public File mcpConfigFile;
